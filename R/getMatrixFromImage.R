@@ -41,5 +41,5 @@ getMatrixFromImage <- function(img) {
     col %>%
     mutate(value = valueOf(r, g, b, a))
   
-  matrix(col$value, nrow = nrow(img), ncol = nrow(img))
+  matrix(col$value, nrow = nrow(img), ncol = ncol(img))
 }
