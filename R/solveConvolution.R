@@ -1,3 +1,5 @@
+library(PEIP)
+
 # Find the right matrix from a convolution, i.e. if A*X = B, find X
 # A*X is the convolution that is done by matrixConvolve(A, X)
 solveConvolution <- function(A, B) {
@@ -23,5 +25,11 @@ solveConvolution <- function(A, B) {
 
   B_transformed <- matrix(B, k*l, 1)
     
-  return(matrix(qr.solve(A_transformed, B_transformed), n-k+1, m-l+1))
+  # Shorten linear system if necessary
+  idx <- sample(1:(k*l), min((n-k+1)*(m-l+1)*10), k*l)
+  A_transformed <- A_transformed[idx,]
+  B_transformed <- B_transformed[idx,]
+  
+  res <- rlsqr(A_transformed, B_transformed, itnlim = 500)$x
+  return(matrix(res, n-k+1, m-l+1))
 }
